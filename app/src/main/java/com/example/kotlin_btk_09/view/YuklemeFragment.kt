@@ -83,47 +83,36 @@ class YuklemeFragment : Fragment() {
         val gorselAdi = "${uuid}.jpg"
 
         val reference = storage.reference
-       val gorselReference = reference.child("images").child("image.jpg")
+        val gorselReference = reference.child(gorselAdi)
 
-        if (secilenGorsel!=null){
-            gorselReference.putFile(secilenGorsel!!).addOnSuccessListener {
-                uploadTask->
-                //url alma işlemi
-                gorselReference.putFile(secilenGorsel!!).addOnSuccessListener {
-                    // url'yi alma işlemi
-                    gorselReference.downloadUrl.addOnSuccessListener {
-                        uri ->
-                        val downnloadUrl = uri.toString()
-                        println(downnloadUrl)
-                        //Veri tabanına kayıt işlemi
+        secilenGorsel?.let {
+            gorselReference.putFile(it).addOnSuccessListener {
+                gorselReference.downloadUrl.addOnSuccessListener { uri ->
+                    val downloadUrl = uri.toString()
 
-                        val postMap = hashMapOf<String,Any>()
-                        postMap.put("downloadUrl",downnloadUrl)
-                        postMap.put("email",auth.currentUser!!.email.toString())
-                        postMap.put("comment",binding.editCommentText.text.toString())
-                        postMap.put("date",Timestamp.now())
+                    // Veri tabanına kayıt işlemi
+                    val postMap = hashMapOf<String, Any>(
+                        "downloadUrl" to downloadUrl,
+                        "email" to auth.currentUser?.email.toString(),
+                        "comment" to binding.editCommentText.text.toString(),
+                        "date" to Timestamp.now()
+                    )
 
-                        db.collection("Posts").add(postMap)
-                            .addOnSuccessListener {
-                                //veri database'e yüklendi
+                    db.collection("Posts").add(postMap)
+                        .addOnSuccessListener {
                             val action = YuklemeFragmentDirections.actionYuklemeFragmentToFeedFragment()
-                                Navigation.findNavController(view).navigate(action)
-
-                            }.addOnFailureListener { exception ->
-                                Toast.makeText(requireContext(),exception.localizedMessage,Toast.LENGTH_LONG).show()
-                            }
-
-                    }
+                            Navigation.findNavController(view).navigate(action)
+                        }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(requireContext(), exception.localizedMessage, Toast.LENGTH_LONG).show()
+                        }
+                }.addOnFailureListener { exception ->
+                    Toast.makeText(requireContext(), "Download URL alınamadı: ${exception.localizedMessage}", Toast.LENGTH_LONG).show()
                 }
-
+            }.addOnFailureListener { exception ->
+                Toast.makeText(requireContext(), "Görsel yükleme başarısız: ${exception.localizedMessage}", Toast.LENGTH_LONG).show()
             }
-                .addOnFailureListener {
-                    exception ->
-                Toast.makeText(requireContext(),exception.localizedMessage,Toast.LENGTH_LONG).show()
-
-                }
-
-        }
+        } ?: Toast.makeText(requireContext(), "Görsel seçilmedi", Toast.LENGTH_LONG).show()
 
 
     }
@@ -197,11 +186,9 @@ class YuklemeFragment : Fragment() {
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result ->
 
-            if (result.resultCode==RESULT_OK){
-
-                val intentFromResult = result.data
-                if (intentFromResult !=null){
-                    secilenGorsel = intentFromResult.data
+            if (result.resultCode == RESULT_OK) {
+                result.data?.data?.let {
+                    secilenGorsel = it
 
                     try {
 

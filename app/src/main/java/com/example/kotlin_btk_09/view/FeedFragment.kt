@@ -1,6 +1,7 @@
 package com.example.kotlin_btk_09.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -79,7 +80,7 @@ class FeedFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
                             val email = document.get("email") as String
                             val downloadUrl = document.get("downloadUrl") as String
                             println(comment)
-
+                            Log.d("FeedFragment", "Download URL: $downloadUrl")
                             val post = Post(email,comment,downloadUrl)
                             postList.add(post)
                         }

@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
-import com.example.kotlin_btk_09.KullaniciFragmentDirections.Companion.actionKullaniciFragmentToFeedFragment
+
 import com.example.kotlin_btk_09.databinding.FragmentKullaniciBinding
+import com.example.kotlin_btk_09.view.KullaniciFragmentDirections.Companion.actionKullaniciFragmentToFeedFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

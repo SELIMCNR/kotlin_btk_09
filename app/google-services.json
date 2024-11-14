@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "401939125197",
+    "project_id": "pictureshareapp-7f427",
+    "storage_bucket": "pictureshareapp-7f427.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401939125197:android:d57eb5607ef4abc5d2ea84",
+        "android_client_info": {
+          "package_name": "com.example.kotlin_btk_09"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5y7lpa3_V4bvDbVOv1yMVPkejAPHJqww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
